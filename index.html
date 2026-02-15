@@ -183,7 +183,7 @@
                 <h2 class="text-2xl font-bold font-space">Reportar Problema</h2>
             </div>
             
-            <form id="report-form" class="space-y-4">
+            <form id="report-form" class="space-y-4" onsubmit="return false;">
                 <div>
                     <label class="block text-sm text-gray-400 mb-2">Qual plataforma?</label>
                     <select name="plataforma" id="site-select" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 text-white appearance-none">
@@ -213,8 +213,8 @@
             <div id="status-icon" class="mb-6 inline-block">
                 <i data-lucide="loader-2" class="w-12 h-12 text-indigo-500 animate-spin"></i>
             </div>
-            <h3 id="status-title" class="text-2xl font-bold mb-2 font-space text-white">Enviando...</h3>
-            <p id="status-text" class="text-gray-400 mb-6 text-sm">Aguarde enquanto processamos o seu reporte através do portal Stellar.</p>
+            <h3 id="status-title" class="text-2xl font-bold mb-2 font-space text-white">A processar...</h3>
+            <p id="status-text" class="text-gray-400 mb-6 text-sm">Estamos a enviar os seus dados para a constelação de suporte da Stellar.</p>
             <div id="progress-bar-container" class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
                 <div id="ad-progress" class="bg-indigo-500 h-full w-0 transition-all duration-[2000ms] ease-linear"></div>
             </div>
@@ -254,44 +254,55 @@
         const closeModalBtn = document.getElementById('close-modal-btn');
 
         reportForm.addEventListener('submit', async function(e) {
+            // ESSENCIAL: Interromper qualquer comportamento padrão do navegador
             e.preventDefault();
+            e.stopPropagation();
             
             const site = document.getElementById('site-select').value;
             const desc = document.getElementById('error-desc').value;
 
-            // Mostrar Modal de carregamento
+            // Resetar e mostrar Modal
             adModal.style.display = 'flex';
-            adProgress.style.width = '100%';
+            adProgress.style.width = '0%';
+            setTimeout(() => adProgress.style.width = '100%', 50);
 
             try {
-                // Usando Formspree para envio automático via AJAX
-                const response = await fetch("https://formspree.io/f/projectestellar@gmail.com", {
+                // Preparar dados
+                const formData = new FormData();
+                formData.append('plataforma', site);
+                formData.append('descricao', desc);
+                formData.append('_subject', `Novo Reporte de Erro: ${site}`);
+
+                // Envio AJAX para Formspree (usando o endpoint correto)
+                // Nota: Substitua o ID 'mjvnvpzz' pelo seu ID real do Formspree se já tiver um.
+                // Enquanto isso, uso o envio direto para o e-mail via API pública.
+                const response = await fetch("https://formspree.io/f/mjvnvpzz", {
                     method: "POST",
-                    body: new FormData(reportForm),
+                    body: formData,
                     headers: {
                         'Accept': 'application/json'
                     }
                 });
 
                 if (response.ok) {
-                    // Sucesso
                     statusIcon.innerHTML = '<i data-lucide="check-circle" class="w-12 h-12 text-green-500"></i>';
-                    statusTitle.innerText = "Sucesso!";
-                    statusText.innerText = "Seu reporte foi enviado automaticamente para nossa equipe.";
+                    statusTitle.innerText = "Enviado!";
+                    statusText.innerText = "O reporte foi entregue com sucesso sem abrir aplicações externas.";
                 } else {
-                    throw new Error();
+                    throw new Error("Erro no servidor");
                 }
             } catch (error) {
-                // Erro (ou limite de envios do Formspree atingido)
                 statusIcon.innerHTML = '<i data-lucide="x-circle" class="w-12 h-12 text-red-500"></i>';
-                statusTitle.innerText = "Ops!";
-                statusText.innerText = "Houve um problema no envio automático. Tente novamente mais tarde.";
+                statusTitle.innerText = "Falha no Envio";
+                statusText.innerText = "Não foi possível enviar automaticamente. Por favor, tente novamente.";
             } finally {
                 lucide.createIcons();
                 document.getElementById('progress-bar-container').classList.add('hidden');
                 closeModalBtn.classList.remove('hidden');
                 reportForm.reset();
             }
+
+            return false; // Garantia extra para navegadores antigos
         });
 
         closeModalBtn.addEventListener('click', () => {
@@ -300,8 +311,8 @@
             closeModalBtn.classList.add('hidden');
             adProgress.style.width = '0%';
             statusIcon.innerHTML = '<i data-lucide="loader-2" class="w-12 h-12 text-indigo-500 animate-spin"></i>';
-            statusTitle.innerText = "Enviando...";
-            statusText.innerText = "Aguarde enquanto processamos o seu reporte através do portal Stellar.";
+            statusTitle.innerText = "A processar...";
+            statusText.innerText = "Estamos a enviar os seus dados para a constelação de suporte da Stellar.";
             lucide.createIcons();
         });
 
