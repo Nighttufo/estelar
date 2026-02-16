@@ -87,15 +87,77 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        #ad-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            align-items: center;
-            justify-content: center;
+        /* Animação do Tutorial (Simulação de Vídeo) */
+        .video-sim {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            background: #0f172a;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #1e293b;
+        }
+
+        .cursor {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            z-index: 10;
+            pointer-events: none;
+            animation: moveCursor 6s infinite ease-in-out;
+        }
+
+        @keyframes moveCursor {
+            0% { top: 80%; left: 10%; }
+            30% { top: 40%; left: 50%; } /* Sobe para o campo */
+            50% { top: 40%; left: 50%; transform: scale(0.8); } /* Clica */
+            70% { top: 75%; left: 50%; transform: scale(1); } /* Vai para o botão */
+            85% { top: 75%; left: 50%; transform: scale(0.8); } /* Clica botão */
+            100% { top: 80%; left: 10%; transform: scale(1); }
+        }
+
+        .fake-input {
+            position: absolute;
+            top: 35%;
+            left: 10%;
+            right: 10%;
+            height: 30px;
+            background: #1e293b;
+            border-radius: 4px;
+        }
+
+        .fake-text {
+            position: absolute;
+            top: 40%;
+            left: 15%;
+            font-size: 10px;
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+            animation: typeText 6s infinite;
+        }
+
+        @keyframes typeText {
+            30% { width: 0; }
+            50%, 100% { width: 70%; }
+        }
+
+        .fake-button {
+            position: absolute;
+            bottom: 15%;
+            left: 30%;
+            right: 30%;
+            height: 35px;
+            background: #4f46e5;
+            border-radius: 6px;
+            animation: buttonClick 6s infinite;
+        }
+
+        @keyframes buttonClick {
+            75% { background: #4f46e5; transform: scale(1); }
+            85% { background: #4338ca; transform: scale(0.95); }
+            95% { background: #4f46e5; transform: scale(1); }
         }
     </style>
 </head>
@@ -127,7 +189,7 @@
                 <div class="w-16 h-16 bg-indigo-500/20 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="monitor" class="w-8 h-8 text-indigo-400"></i>
                 </div>
-                <h3 class="text-2xl font-bold mb-3">Versão Desktop</h3>
+                <h3 class="text-2xl font-bold mb-3 text-white">Versão Desktop</h3>
                 <span class="mt-auto inline-flex items-center text-indigo-400 font-semibold">Explorar no PC <i data-lucide="external-link" class="ml-2 w-4 h-4"></i></span>
             </a>
 
@@ -135,131 +197,87 @@
                 <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="smartphone" class="w-8 h-8 text-purple-400"></i>
                 </div>
-                <h3 class="text-2xl font-bold mb-3">Versão Mobile</h3>
+                <h3 class="text-2xl font-bold mb-3 text-white">Versão Mobile</h3>
                 <span class="mt-auto inline-flex items-center text-purple-400 font-semibold">Abrir no Celular <i data-lucide="external-link" class="ml-2 w-4 h-4"></i></span>
             </a>
         </div>
 
-        <!-- Seção: Nossa Visão -->
-        <section class="glass-card rounded-3xl p-10 max-w-4xl mx-auto border-white/5 shadow-2xl">
-            <div class="flex flex-col md:flex-row gap-12 items-center">
-                <div class="w-full md:w-1/2">
-                    <h2 class="text-3xl font-bold mb-6 text-white font-space flex items-center gap-3">
-                        <i data-lucide="sparkles" class="text-yellow-400"></i> Nossa Visão
-                    </h2>
-                    <p class="text-gray-400 mb-6 leading-relaxed">
-                        A **Stellar Project** nasceu para organizar o caos criativo. Acreditamos que cada ideia é uma estrela que, quando conectada, forma uma constelação de conhecimento poderosa.
-                    </p>
-                    <p class="text-gray-400 leading-relaxed">
-                        Nossa ferramenta de mapas mentais foi desenhada para ser fluida, rápida e visualmente imersiva, permitindo que você navegue pelo seu cérebro como se explorasse o espaço profundo.
-                    </p>
-                </div>
-                
-                <div class="w-full md:w-1/2 grid grid-cols-2 gap-4">
-                    <div class="p-5 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
-                        <i data-lucide="brain-circuit" class="w-6 h-6 text-indigo-400 mb-2"></i>
-                        <h4 class="font-bold text-sm text-white">Intuitivo</h4>
-                    </div>
-                    <div class="p-5 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
-                        <i data-lucide="rocket" class="w-6 h-6 text-orange-400 mb-2"></i>
-                        <h4 class="font-bold text-sm text-white">Rápido</h4>
-                    </div>
-                    <div class="p-5 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
-                        <i data-lucide="cloud" class="w-6 h-6 text-blue-400 mb-2"></i>
-                        <h4 class="font-bold text-sm text-white">Nuvem</h4>
-                    </div>
-                    <div class="p-5 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
-                        <i data-lucide="share-2" class="w-6 h-6 text-green-400 mb-2"></i>
-                        <h4 class="font-bold text-sm text-white">Colaborativo</h4>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Seção de Reporte -->
-        <section class="max-w-xl mx-auto glass-card rounded-3xl p-8 border-indigo-500/20 shadow-2xl">
-            <div class="flex items-center gap-3 mb-6">
-                <i data-lucide="alert-circle" class="text-red-400"></i>
-                <h2 class="text-2xl font-bold font-space">Reportar Problema</h2>
-            </div>
+        <!-- Seção de Reporte Manual -->
+        <section class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-start glass-card rounded-3xl p-10 border-indigo-500/20 shadow-2xl">
             
-            <form id="report-form" action="https://formspree.io/f/mjvnvpzz" method="POST" class="space-y-4">
-                <div>
-                    <label class="block text-sm text-gray-400 mb-2">Qual plataforma?</label>
-                    <select name="plataforma" id="site-select" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 text-white appearance-none">
-                        <option value="" disabled selected class="bg-slate-900">Selecione...</option>
-                        <option value="Desktop" class="bg-slate-900">Versão Desktop</option>
-                        <option value="Mobile" class="bg-slate-900">Versão Mobile</option>
-                        <option value="Portal" class="bg-slate-900">Este Site</option>
-                    </select>
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="mail-warning" class="text-indigo-400 w-8 h-8"></i>
+                    <h2 class="text-3xl font-bold font-space text-white">Canal de Suporte</h2>
                 </div>
                 
-                <div>
-                    <label class="block text-sm text-gray-400 mb-2">Sua Descrição</label>
-                    <textarea name="descricao" id="error-desc" required rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 text-white placeholder-gray-600" placeholder="O que aconteceu de errado?"></textarea>
-                </div>
-
-                <div class="flex flex-col gap-3">
-                    <button type="submit" id="submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 group">
-                        <span>Enviar Reporte Automático</span>
-                        <i data-lucide="send" class="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                    </button>
-                    
-                    <button type="button" id="direct-mail-btn" class="w-full bg-white/5 hover:bg-white/10 text-gray-300 py-3 rounded-xl border border-white/10 text-sm transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="mail" class="w-4 h-4"></i>
-                        Enviar via E-mail Direto
-                    </button>
-                </div>
-                
-                <p class="text-center text-[10px] text-gray-500">
-                    O ID do formulário atual é <span class="text-indigo-400 font-mono">mjvnvpzz</span>. Se o erro persistir, use o botão de E-mail Direto.
+                <p class="text-gray-400 mb-6 leading-relaxed">
+                    Para garantir que o seu reporte chegue até nós sem erros técnicos, utilize o nosso envio manual. Siga os passos abaixo:
                 </p>
-            </form>
-        </section>
-    </main>
 
-    <!-- Modal de Status do Envio -->
-    <div id="ad-modal">
-        <div id="status-content" class="text-center p-8 max-w-sm">
-            <div id="status-icon" class="mb-6 inline-block">
-                <i data-lucide="loader-2" class="w-12 h-12 text-indigo-500 animate-spin"></i>
-            </div>
-            <h3 id="status-title" class="text-2xl font-bold mb-2 font-space text-white">A processar...</h3>
-            <p id="status-text" class="text-gray-400 mb-6 text-sm">Estamos a enviar os seus dados para a constelação de suporte da Stellar.</p>
-            <div id="progress-bar-container" class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                <div id="ad-progress" class="bg-indigo-500 h-full w-0 transition-all duration-[500ms] ease-linear"></div>
-            </div>
-            
-            <div id="error-actions" class="hidden flex flex-col gap-3 mt-4">
-                <button id="close-modal-btn" class="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl transition-colors font-semibold">Tentar Novamente</button>
-                <div class="h-px bg-white/10 w-full my-2"></div>
-                <p class="text-xs text-gray-500 uppercase tracking-widest font-bold">Alternativa</p>
-                <a id="mailto-fallback" href="mailto:projectestellar@gmail.com" class="w-full bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-400 py-3 rounded-xl transition-all border border-indigo-500/30 flex items-center justify-center gap-2">
-                    <i data-lucide="mail" class="w-4 h-4"></i>
-                    <span>Enviar via E-mail</span>
+                <ul class="space-y-4 text-sm text-gray-300 mb-8">
+                    <li class="flex items-start gap-3">
+                        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs mt-0.5">1</span>
+                        <span>No assunto do e-mail, coloque: <strong>"REPORT: [Nome do Erro]"</strong>.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs mt-0.5">2</span>
+                        <span>Diga-nos se estava a usar a versão <strong>Desktop ou Mobile</strong>.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs mt-0.5">3</span>
+                        <span>Descreva os passos para reproduzir o erro.</span>
+                    </li>
+                </ul>
+
+                <a href="mailto:projectestellar@gmail.com?subject=REPORT:%20Erro%20no%20Stellar&body=Plataforma:%20[Desktop/Mobile]%0D%0ADescrição:%20[Descreva%20o%20que%20aconteceu]" class="inline-flex items-center justify-center gap-3 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-indigo-500/20 group">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    Enviar E-mail Agora
                 </a>
             </div>
-            
-            <button id="success-close-btn" class="hidden mt-4 w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 py-3 rounded-xl transition-colors border border-green-500/30 font-bold">Fechar</button>
-        </div>
-    </div>
+
+            <div class="space-y-4">
+                <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2">Tutorial Rápido</p>
+                <!-- Simulação de Vídeo -->
+                <div class="video-sim">
+                    <div class="fake-input"></div>
+                    <div class="fake-text font-mono">Descrevendo o erro...</div>
+                    <div class="fake-button"></div>
+                    <svg class="cursor" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.5 2.5L16 8L5.5 13.5V2.5Z" fill="white" stroke="black" stroke-width="1.5"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <i data-lucide="play-circle" class="w-12 h-12 text-white/20"></i>
+                    </div>
+                </div>
+                <div class="bg-white/5 rounded-xl p-4 border border-white/10">
+                    <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                        <i data-lucide="info" class="w-4 h-4 text-blue-400"></i> Dica Stellar
+                    </h4>
+                    <p class="text-xs text-gray-500">
+                        Anexar um print do ecrã ajuda a nossa equipa a resolver o problema muito mais depressa!
+                    </p>
+                </div>
+            </div>
+
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer class="relative z-10 border-t border-white/5 mt-auto py-12">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="font-space text-2xl font-bold tracking-tighter mb-6">STELLAR PROJECT</h2>
+            <h2 class="font-space text-2xl font-bold tracking-tighter mb-6 text-white">STELLAR PROJECT</h2>
             
             <div class="flex justify-center gap-6 mb-8">
-                <a href="https://github.com/NightTufo" target="_blank" title="GitHub" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:border-indigo-500 hover:bg-indigo-500/10 transition-all">
+                <a href="https://github.com/NightTufo" target="_blank" title="GitHub" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:border-indigo-500 hover:bg-indigo-500/10 transition-all text-gray-400">
                     <i data-lucide="github" class="w-5 h-5"></i>
                 </a>
-                <a href="https://www.tiktok.com/@stellar.project.ofc" target="_blank" title="TikTok" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:border-pink-500 hover:bg-pink-500/10 transition-all">
+                <a href="https://www.tiktok.com/@stellar.project.ofc" target="_blank" title="TikTok" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:border-pink-500 hover:bg-pink-500/10 transition-all text-gray-400">
                     <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.59-1.01-.01 2.62.02 5.24-.02 7.86-.03 2.13-.58 4.33-2.11 5.83-1.48 1.5-3.6 2.22-5.67 2.26-2.03.04-4.14-.54-5.69-1.87-1.74-1.46-2.58-3.79-2.28-6.01.24-1.92 1.35-3.69 2.98-4.73 1.34-.87 2.97-1.29 4.56-1.19.01 1.64-.01 3.27-.01 4.91-1.01-.22-2.15-.05-2.95.66-.9.78-1.08 2.11-.63 3.16.4 1.05 1.48 1.76 2.59 1.76 1.08.03 2.18-.54 2.71-1.5.34-.61.42-1.33.4-2.03-.01-4.83.01-9.66-.01-14.49Z"/></svg>
                 </a>
             </div>
 
-            <p class="text-gray-600 text-xs mb-2">Suporte: projectestellar@gmail.com</p>
-            <p class="text-gray-700 text-[10px] uppercase tracking-widest">© 2024 Todos os direitos reservados</p>
+            <p class="text-gray-600 text-[10px] uppercase tracking-widest">projectestellar@gmail.com</p>
         </div>
     </footer>
 
@@ -277,88 +295,6 @@
             star.style.setProperty('--duration', `${2 + Math.random() * 4}s`);
             container.appendChild(star);
         }
-
-        const reportForm = document.getElementById('report-form');
-        const adModal = document.getElementById('ad-modal');
-        const adProgress = document.getElementById('ad-progress');
-        const statusTitle = document.getElementById('status-title');
-        const statusText = document.getElementById('status-text');
-        const statusIcon = document.getElementById('status-icon');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const successCloseBtn = document.getElementById('success-close-btn');
-        const errorActions = document.getElementById('error-actions');
-        const progressBarContainer = document.getElementById('progress-bar-container');
-        const mailtoFallback = document.getElementById('mailto-fallback');
-        const directMailBtn = document.getElementById('direct-mail-btn');
-
-        // Função para gerar link mailto
-        const openMailFallback = () => {
-            const plataforma = document.getElementById('site-select').value || "Não especificada";
-            const descricao = document.getElementById('error-desc').value || "Sem descrição";
-            const subject = encodeURIComponent(`Reporte de Erro Stellar: ${plataforma}`);
-            const body = encodeURIComponent(`Plataforma: ${plataforma}\n\nDescrição do Problema:\n${descricao}`);
-            window.location.href = `mailto:projectestellar@gmail.com?subject=${subject}&body=${body}`;
-        };
-
-        directMailBtn.addEventListener('click', openMailFallback);
-
-        reportForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Reset modal state
-            adModal.style.display = 'flex';
-            progressBarContainer.classList.remove('hidden');
-            errorActions.classList.add('hidden');
-            successCloseBtn.classList.add('hidden');
-            adProgress.style.width = '0%';
-            statusIcon.innerHTML = '<i data-lucide="loader-2" class="w-12 h-12 text-indigo-500 animate-spin"></i>';
-            statusTitle.innerText = "A processar...";
-            statusText.innerText = "Estamos a tentar enviar o reporte automático...";
-            lucide.createIcons();
-            
-            setTimeout(() => adProgress.style.width = '70%', 50);
-
-            try {
-                const formData = new FormData(reportForm);
-
-                const response = await fetch(reportForm.action, {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    adProgress.style.width = '100%';
-                    statusIcon.innerHTML = '<i data-lucide="check-circle" class="w-12 h-12 text-green-500"></i>';
-                    statusTitle.innerText = "Recebido!";
-                    statusText.innerText = "O reporte foi entregue com sucesso via Formspree.";
-                    reportForm.reset();
-                    successCloseBtn.classList.remove('hidden');
-                    progressBarContainer.classList.add('hidden');
-                } else {
-                    throw new Error("Falha no servidor Formspree.");
-                }
-                
-            } catch (error) {
-                adProgress.style.width = '100%';
-                statusIcon.innerHTML = '<i data-lucide="alert-triangle" class="w-12 h-12 text-amber-500"></i>';
-                statusTitle.innerText = "Envio Automático Falhou";
-                statusText.innerHTML = "Não conseguimos conectar ao Formspree. Por favor, utilize o botão abaixo para enviar via e-mail direto.";
-                errorActions.classList.remove('hidden');
-                progressBarContainer.classList.add('hidden');
-            } finally {
-                lucide.createIcons();
-            }
-        });
-
-        const hideModal = () => {
-            adModal.style.display = 'none';
-        };
-
-        closeModalBtn.addEventListener('click', hideModal);
-        successCloseBtn.addEventListener('click', hideModal);
 
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth - 0.5) * 15;
