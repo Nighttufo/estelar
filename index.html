@@ -223,12 +223,17 @@
                 <div id="ad-progress" class="bg-indigo-500 h-full w-0 transition-all duration-[500ms] ease-linear"></div>
             </div>
             
-            <div id="error-actions" class="hidden flex flex-col gap-2 mt-4">
-                <button id="close-modal-btn" class="w-full bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition-colors">Tentar Novamente</button>
-                <a href="mailto:projectestellar@gmail.com?subject=Reporte de Erro" class="text-indigo-400 text-xs hover:underline mt-2">Enviar via E-mail Manualmente</a>
+            <div id="error-actions" class="hidden flex flex-col gap-3 mt-4">
+                <button id="close-modal-btn" class="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl transition-colors font-semibold">Tentar Novamente</button>
+                <div class="h-px bg-white/10 w-full my-2"></div>
+                <p class="text-xs text-gray-500 uppercase tracking-widest font-bold">Alternativa</p>
+                <a id="mailto-fallback" href="mailto:projectestellar@gmail.com" class="w-full bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-400 py-3 rounded-xl transition-all border border-indigo-500/30 flex items-center justify-center gap-2">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                    <span>Enviar via E-mail</span>
+                </a>
             </div>
             
-            <button id="success-close-btn" class="hidden mt-4 w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 py-2 rounded-lg transition-colors border border-green-500/30">Fechar</button>
+            <button id="success-close-btn" class="hidden mt-4 w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 py-3 rounded-xl transition-colors border border-green-500/30 font-bold">Fechar</button>
         </div>
     </div>
 
@@ -276,10 +281,17 @@
         const successCloseBtn = document.getElementById('success-close-btn');
         const errorActions = document.getElementById('error-actions');
         const progressBarContainer = document.getElementById('progress-bar-container');
+        const mailtoFallback = document.getElementById('mailto-fallback');
 
         reportForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            const plataforma = document.getElementById('site-select').value;
+            const descricao = document.getElementById('error-desc').value;
+            
+            // Configura link de fallback por precaução
+            mailtoFallback.href = `mailto:projectestellar@gmail.com?subject=Reporte de Erro [${plataforma}]&body=Plataforma: ${plataforma}%0D%0A%0D%0ADescrição: ${descricao}`;
+
             // Reset modal state
             adModal.style.display = 'flex';
             progressBarContainer.classList.remove('hidden');
@@ -319,7 +331,7 @@
                     if (result.errors) {
                         errorMsg = result.errors.map(e => e.message).join(', ');
                     } else if (response.status === 404) {
-                        errorMsg = "Formulário não encontrado (ID incorreto ou inativo).";
+                        errorMsg = "O Formspree retornou: Form not found. Por favor, verifique se o ID 'mjvnvpzz' está correto ou se o formulário foi ativado por e-mail.";
                     }
 
                     throw new Error(errorMsg);
@@ -328,8 +340,8 @@
             } catch (error) {
                 adProgress.style.width = '100%';
                 statusIcon.innerHTML = '<i data-lucide="x-circle" class="w-12 h-12 text-red-500"></i>';
-                statusTitle.innerText = "Falha no Envio";
-                statusText.innerHTML = `Não conseguimos enviar os dados.<br><span class="text-red-400 mt-2 block font-mono text-xs">Erro: ${error.message}</span>`;
+                statusTitle.innerText = "Erro no Destino";
+                statusText.innerHTML = `${error.message}`;
                 errorActions.classList.remove('hidden');
                 progressBarContainer.classList.add('hidden');
             } finally {
