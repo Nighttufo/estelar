@@ -41,7 +41,7 @@
             z-index: 0;
             background: radial-gradient(circle at center, #111 0%, #050505 100%);
             transition: transform 0.2s ease-out;
-            pointer-events: none; /* Garante que o fundo não bloqueie cliques */
+            pointer-events: none; /* Crucial: impede que o container bloqueie cliques */
         }
 
         .star {
@@ -75,7 +75,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            z-index: 50; /* Z-index muito alto para garantir interatividade */
+            z-index: 50;
             cursor: pointer;
             display: flex;
             flex-direction: column;
@@ -99,7 +99,7 @@
             z-index: 10;
         }
 
-        /* Animação do Tutorial (Simulação de Vídeo) */
+        /* Animação do Tutorial */
         .video-sim {
             position: relative;
             width: 100%;
@@ -200,9 +200,8 @@
             <!-- Botão Desktop -->
             <a href="https://nighttufo.github.io/estelar/" 
                target="_blank" 
-               rel="noopener noreferrer" 
                class="btn-stellar rounded-2xl p-8"
-               onclick="window.open(this.href, '_blank'); return false;">
+               onclick="window.location.href='https://nighttufo.github.io/estelar/'; return false;">
                 <div class="w-16 h-16 bg-indigo-500/20 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="monitor" class="w-8 h-8 text-indigo-400"></i>
                 </div>
@@ -217,9 +216,8 @@
             <!-- Botão Mobile -->
             <a href="https://nighttufo.github.io/estelar-mobile/" 
                target="_blank" 
-               rel="noopener noreferrer" 
                class="btn-stellar rounded-2xl p-8"
-               onclick="window.open(this.href, '_blank'); return false;">
+               onclick="window.location.href='https://nighttufo.github.io/estelar-mobile/'; return false;">
                 <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="smartphone" class="w-8 h-8 text-purple-400"></i>
                 </div>
@@ -231,6 +229,32 @@
                 </span>
             </a>
         </div>
+
+        <!-- Seção Restaurada: Nosso Propósito -->
+        <section class="max-w-4xl mx-auto text-center space-y-8 py-12">
+            <h2 class="text-3xl md:text-4xl font-bold font-space text-white">Nosso Propósito</h2>
+            <p class="text-gray-400 text-lg leading-relaxed max-w-2xl mx-auto">
+                O Stellar Project nasceu para simplificar a complexidade. Acreditamos que cada ideia é uma estrela em potencial, e nossa missão é fornecer o mapa para que você possa conectá-las e formar constelações de conhecimento.
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
+                <div class="p-6 glass-card rounded-2xl">
+                    <i data-lucide="zap" class="w-6 h-6 text-yellow-400 mx-auto mb-3"></i>
+                    <p class="text-sm font-semibold">Rápido</p>
+                </div>
+                <div class="p-6 glass-card rounded-2xl">
+                    <i data-lucide="shield" class="w-6 h-6 text-green-400 mx-auto mb-3"></i>
+                    <p class="text-sm font-semibold">Seguro</p>
+                </div>
+                <div class="p-6 glass-card rounded-2xl">
+                    <i data-lucide="cloud" class="w-6 h-6 text-blue-400 mx-auto mb-3"></i>
+                    <p class="text-sm font-semibold">Sincronizado</p>
+                </div>
+                <div class="p-6 glass-card rounded-2xl">
+                    <i data-lucide="layout" class="w-6 h-6 text-purple-400 mx-auto mb-3"></i>
+                    <p class="text-sm font-semibold">Intuitivo</p>
+                </div>
+            </div>
+        </section>
 
         <!-- Seção de Reporte Manual -->
         <section class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-start glass-card rounded-3xl p-10 border-indigo-500/20 shadow-2xl">
