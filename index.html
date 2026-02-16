@@ -68,20 +68,21 @@
             pointer-events: none;
         }
 
-        /* Botões de Ação Melhorados */
+        /* Botões de Ação Convertidos em Links Reais para Ignorar Bloqueios de Iframe */
         .btn-stellar {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            z-index: 100; /* Z-index máximo para garantir cliques */
+            z-index: 100;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             text-decoration: none !important;
+            color: inherit;
         }
 
         .btn-stellar:hover {
@@ -89,6 +90,7 @@
             border-color: #818cf8;
             transform: translateY(-8px) scale(1.02);
             box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
+            color: white;
         }
 
         .glass-card {
@@ -195,11 +197,13 @@
     <!-- Conteúdo Principal -->
     <main class="relative z-30 container mx-auto px-6 pb-24 space-y-24">
         
-        <!-- Botões de Ação - Redirecionamento Atualizado -->
+        <!-- Botões de Ação - Redirecionamento com Tags <a> Reais -->
         <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <!-- Botão Desktop -->
-            <button 
-                onclick="window.open('https://nighttufo.github.io/stellar-project/', '_blank')"
+            <!-- Link Desktop Atualizado -->
+            <a 
+                href="https://nighttufo.github.io/stellar-project/" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 class="btn-stellar rounded-2xl p-8 w-full">
                 <div class="w-16 h-16 bg-indigo-500/20 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="monitor" class="w-8 h-8 text-indigo-400"></i>
@@ -210,11 +214,13 @@
                     Explorar no PC 
                     <i data-lucide="external-link" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                 </span>
-            </button>
+            </a>
 
-            <!-- Botão Mobile -->
-            <button 
-                onclick="window.open('https://nighttufo.github.io/estelar-mobile/', '_blank')"
+            <!-- Link Mobile -->
+            <a 
+                href="https://nighttufo.github.io/estelar-mobile/" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 class="btn-stellar rounded-2xl p-8 w-full">
                 <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="smartphone" class="w-8 h-8 text-purple-400"></i>
@@ -225,7 +231,7 @@
                     Abrir no Telemóvel 
                     <i data-lucide="external-link" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                 </span>
-            </button>
+            </a>
         </div>
 
         <!-- Secção: Nosso Propósito -->
