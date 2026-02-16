@@ -67,24 +67,35 @@
             pointer-events: none;
         }
 
+        /* Estilo dos Botões Principais */
         .btn-stellar {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 20; /* Garantir que o botão esteja acima da nébula */
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
         }
 
         .btn-stellar:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
             border-color: #818cf8;
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
         }
 
         .glass-card {
             background: rgba(15, 15, 25, 0.7);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 10;
         }
 
         /* Animação do Tutorial (Simulação de Vídeo) */
@@ -109,10 +120,10 @@
 
         @keyframes moveCursor {
             0% { top: 80%; left: 10%; }
-            30% { top: 40%; left: 50%; } /* Sobe para o campo */
-            50% { top: 40%; left: 50%; transform: scale(0.8); } /* Clica */
-            70% { top: 75%; left: 50%; transform: scale(1); } /* Vai para o botão */
-            85% { top: 75%; left: 50%; transform: scale(0.8); } /* Clica botão */
+            30% { top: 40%; left: 50%; }
+            50% { top: 40%; left: 50%; transform: scale(0.8); }
+            70% { top: 75%; left: 50%; transform: scale(1); }
+            85% { top: 75%; left: 50%; transform: scale(0.8); }
             100% { top: 80%; left: 10%; transform: scale(1); }
         }
 
@@ -169,7 +180,7 @@
     <div class="nebula bg-blue-600 bottom-[-10%] right-[-10%]"></div>
 
     <!-- Header -->
-    <header class="relative z-10 pt-20 pb-12 px-6 text-center">
+    <header class="relative z-20 pt-20 pb-12 px-6 text-center">
         <div class="container mx-auto">
             <div class="inline-block px-4 py-1.5 mb-6 border border-indigo-500/30 rounded-full bg-indigo-500/10 backdrop-blur-md">
                 <span class="text-xs font-bold tracking-[0.2em] text-indigo-300 uppercase">Stellar Project</span>
@@ -181,24 +192,34 @@
     </header>
 
     <!-- Main Content -->
-    <main class="relative z-10 container mx-auto px-6 pb-24 space-y-24">
+    <main class="relative z-20 container mx-auto px-6 pb-24 space-y-24">
         
-        <!-- Botões de Ação -->
+        <!-- Botões de Ação Corrigidos -->
         <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <a href="https://nighttufo.github.io/estelar/" target="_blank" class="btn-stellar glass-card rounded-2xl p-8 flex flex-col items-center text-center">
+            <!-- Botão Desktop -->
+            <a href="https://nighttufo.github.io/estelar/" target="_blank" rel="noopener noreferrer" class="btn-stellar rounded-2xl p-8">
                 <div class="w-16 h-16 bg-indigo-500/20 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="monitor" class="w-8 h-8 text-indigo-400"></i>
                 </div>
                 <h3 class="text-2xl font-bold mb-3 text-white">Versão Desktop</h3>
-                <span class="mt-auto inline-flex items-center text-indigo-400 font-semibold">Explorar no PC <i data-lucide="external-link" class="ml-2 w-4 h-4"></i></span>
+                <p class="text-gray-400 text-sm mb-6">Ideal para grandes projetos e organização detalhada.</p>
+                <span class="mt-auto inline-flex items-center text-indigo-400 font-semibold group">
+                    Explorar no PC 
+                    <i data-lucide="external-link" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                </span>
             </a>
 
-            <a href="https://nighttufo.github.io/estelar-mobile/" target="_blank" class="btn-stellar glass-card rounded-2xl p-8 flex flex-col items-center text-center">
+            <!-- Botão Mobile -->
+            <a href="https://nighttufo.github.io/estelar-mobile/" target="_blank" rel="noopener noreferrer" class="btn-stellar rounded-2xl p-8">
                 <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-6">
                     <i data-lucide="smartphone" class="w-8 h-8 text-purple-400"></i>
                 </div>
                 <h3 class="text-2xl font-bold mb-3 text-white">Versão Mobile</h3>
-                <span class="mt-auto inline-flex items-center text-purple-400 font-semibold">Abrir no Celular <i data-lucide="external-link" class="ml-2 w-4 h-4"></i></span>
+                <p class="text-gray-400 text-sm mb-6">Acesse as suas ideias em qualquer lugar, na palma da mão.</p>
+                <span class="mt-auto inline-flex items-center text-purple-400 font-semibold group">
+                    Abrir no Celular 
+                    <i data-lucide="external-link" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                </span>
             </a>
         </div>
 
@@ -238,7 +259,6 @@
 
             <div class="space-y-4">
                 <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2">Tutorial Rápido</p>
-                <!-- Simulação de Vídeo -->
                 <div class="video-sim">
                     <div class="fake-input"></div>
                     <div class="fake-text font-mono">Descrevendo o erro...</div>
@@ -264,7 +284,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="relative z-10 border-t border-white/5 mt-auto py-12">
+    <footer class="relative z-20 border-t border-white/5 mt-auto py-12">
         <div class="container mx-auto px-6 text-center">
             <h2 class="font-space text-2xl font-bold tracking-tighter mb-6 text-white">STELLAR PROJECT</h2>
             
