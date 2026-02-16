@@ -183,7 +183,6 @@
                 <h2 class="text-2xl font-bold font-space">Reportar Problema</h2>
             </div>
             
-            <!-- Verifique se o código 'mjvnvpzz' está correto no seu painel Formspree -->
             <form id="report-form" action="https://formspree.io/f/mjvnvpzz" method="POST" class="space-y-4">
                 <div>
                     <label class="block text-sm text-gray-400 mb-2">Qual plataforma?</label>
@@ -204,6 +203,10 @@
                     <span>Enviar Reporte Automático</span>
                     <i data-lucide="send" class="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
                 </button>
+                
+                <p class="text-center text-[10px] text-gray-500">
+                    O ID do formulário atual é <span class="text-indigo-400 font-mono">mjvnvpzz</span>. Se o erro persistir, o ID pode estar incorreto ou inativo no Formspree.
+                </p>
             </form>
         </section>
     </main>
@@ -219,7 +222,13 @@
             <div id="progress-bar-container" class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
                 <div id="ad-progress" class="bg-indigo-500 h-full w-0 transition-all duration-[500ms] ease-linear"></div>
             </div>
-            <button id="close-modal-btn" class="hidden mt-4 w-full bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition-colors">Fechar</button>
+            
+            <div id="error-actions" class="hidden flex flex-col gap-2 mt-4">
+                <button id="close-modal-btn" class="w-full bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition-colors">Tentar Novamente</button>
+                <a href="mailto:projectestellar@gmail.com?subject=Reporte de Erro" class="text-indigo-400 text-xs hover:underline mt-2">Enviar via E-mail Manualmente</a>
+            </div>
+            
+            <button id="success-close-btn" class="hidden mt-4 w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 py-2 rounded-lg transition-colors border border-green-500/30">Fechar</button>
         </div>
     </div>
 
@@ -245,6 +254,7 @@
     <script>
         lucide.createIcons();
 
+        // Estrelas
         const container = document.getElementById('stars-container');
         for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
@@ -263,14 +273,23 @@
         const statusText = document.getElementById('status-text');
         const statusIcon = document.getElementById('status-icon');
         const closeModalBtn = document.getElementById('close-modal-btn');
+        const successCloseBtn = document.getElementById('success-close-btn');
+        const errorActions = document.getElementById('error-actions');
+        const progressBarContainer = document.getElementById('progress-bar-container');
 
         reportForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Reset modal state
             adModal.style.display = 'flex';
-            document.getElementById('progress-bar-container').classList.remove('hidden');
-            closeModalBtn.classList.add('hidden');
+            progressBarContainer.classList.remove('hidden');
+            errorActions.classList.add('hidden');
+            successCloseBtn.classList.add('hidden');
             adProgress.style.width = '0%';
+            statusIcon.innerHTML = '<i data-lucide="loader-2" class="w-12 h-12 text-indigo-500 animate-spin"></i>';
+            statusTitle.innerText = "A processar...";
+            statusText.innerText = "Estamos a enviar os seus dados para a constelação de suporte da Stellar.";
+            lucide.createIcons();
             
             setTimeout(() => adProgress.style.width = '70%', 50);
 
@@ -291,30 +310,39 @@
                     statusTitle.innerText = "Recebido!";
                     statusText.innerText = "O reporte foi entregue com sucesso à equipe Stellar.";
                     reportForm.reset();
+                    successCloseBtn.classList.remove('hidden');
+                    progressBarContainer.classList.add('hidden');
                 } else {
                     const result = await response.json();
-                    throw new Error(result.errors ? result.errors[0].message : "Formulário não encontrado ou ID incorreto.");
+                    let errorMsg = "Ocorreu um erro inesperado.";
+                    
+                    if (result.errors) {
+                        errorMsg = result.errors.map(e => e.message).join(', ');
+                    } else if (response.status === 404) {
+                        errorMsg = "Formulário não encontrado (ID incorreto ou inativo).";
+                    }
+
+                    throw new Error(errorMsg);
                 }
                 
             } catch (error) {
                 adProgress.style.width = '100%';
                 statusIcon.innerHTML = '<i data-lucide="x-circle" class="w-12 h-12 text-red-500"></i>';
-                statusTitle.innerText = "Erro no Destino";
-                statusText.innerText = "O Formspree retornou: " + error.message + ". Por favor, verifique se o ID 'mjvnvpzz' está correto.";
+                statusTitle.innerText = "Falha no Envio";
+                statusText.innerHTML = `Não conseguimos enviar os dados.<br><span class="text-red-400 mt-2 block font-mono text-xs">Erro: ${error.message}</span>`;
+                errorActions.classList.remove('hidden');
+                progressBarContainer.classList.add('hidden');
             } finally {
                 lucide.createIcons();
-                document.getElementById('progress-bar-container').classList.add('hidden');
-                closeModalBtn.classList.remove('hidden');
             }
         });
 
-        closeModalBtn.addEventListener('click', () => {
+        const hideModal = () => {
             adModal.style.display = 'none';
-            statusIcon.innerHTML = '<i data-lucide="loader-2" class="w-12 h-12 text-indigo-500 animate-spin"></i>';
-            statusTitle.innerText = "A processar...";
-            statusText.innerText = "Estamos a enviar os seus dados para a constelação de suporte da Stellar.";
-            lucide.createIcons();
-        });
+        };
+
+        closeModalBtn.addEventListener('click', hideModal);
+        successCloseBtn.addEventListener('click', hideModal);
 
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth - 0.5) * 15;
